@@ -8,163 +8,159 @@ Purwadhika Digital Technology School - Job Connector Data Science
 * Muhammad Naufal Maahir
 ---
 
-## 1. Backgroud
+## *1. Background*
+**Bank marketing campaigns dataset analysis Opening a Term Deposit**
+It is a dataset that describing Portugal bank marketing campaigns results.
+Conducted campaigns were based mostly on direct phone calls, offering bank client to place a term deposit.
+If after all marking efforts client had agreed to place deposit - target variable was marked 'yes', otherwise 'no'
 
-**Analisis Dataset Kampanye Pemasaran Bank: Penawaran Deposito Berjangka**  
-Dataset ini menggambarkan hasil kampanye pemasaran sebuah bank di Portugal. Kampanye dilakukan terutama melalui panggilan telepon langsung kepada nasabah untuk menawarkan produk deposito berjangka.  
-Jika setelah seluruh upaya pemasaran nasabah bersedia membuka deposito, maka target diberi label `yes`; jika tidak, diberi label `no`.
+Sourse of the data
+https://archive.ics.uci.edu/ml/datasets/bank+marketing
 
-**Sumber Data:**  
-[https://archive.ics.uci.edu/ml/datasets/bank+marketing](https://archive.ics.uci.edu/ml/datasets/bank+marketing)
+## *2. Business Understanding*
+**Context**
+A bank in Portugal conducted a marketing campaign via telephone to offer term deposit products. However, the campaign achieved relatively low success rates (small conversion ratio). Management aims to enhance campaign effectiveness by identifying client characteristics associated with accepting deposit offers, allowing marketing strategies to become more targeted and cost-effective.
 
----
+**Target**
+* `yes` → client accepts the deposit offer
+* `no` → client rejects the offer
+This represents a binary classification target.
 
-## 2. Business Knowledge
+## *3. Problem Statements*
+This project will try to answer the following questions:
 
-**Konteks**  
-Sebuah bank di Portugal telah melakukan kampanye pemasaran melalui telepon untuk menawarkan produk deposito berjangka. Namun, tingkat keberhasilan kampanye (conversion ratio) masih rendah.  
-Pihak manajemen ingin meningkatkan efektivitas kampanye dengan mengidentifikasi karakteristik nasabah yang cenderung menerima penawaran deposito, sehingga strategi pemasaran dapat menjadi lebih terarah dan efisien.
+How can we predict the likelihood of a customer accepting a term deposit offer based on historical marketing campaign data and their profiles, enabling the bank to target campaigns more effectively?
 
-**Target**  
-- `yes` → Nasabah menerima tawaran deposito  
-- `no` → Nasabah menolak tawaran deposito  
+## *4. Goals* 
+The main goals of this project are: 
 
-Target ini merupakan permasalahan **klasifikasi biner**.
+Based on these issues, the company aims to develop the capability to predict a customer's likelihood of accepting a term deposit offer using historical customer data by:
+* Building a classification model to predict whether a customer will accept a deposit offer.
+* Identifying key factors influencing customer decisions.
+* Providing strategic recommendations to improve campaign success rates.
 
----
+## *5. Stakeholders*
+The stakeholders involved in this project include:
 
-## 3. Problem Statement
+* **Bank Management** → makes business decisions based on predictive outcomes.
+* **Marketing/Telemarketing Team** → optimizes strategies and customer segmentation.
+* **End Customers** → indirectly benefit from more relevant campaigns.
 
-Proyek ini akan mencoba menjawab pertanyaan berikut:  
-**Bagaimana memprediksi kemungkinan seorang nasabah menerima tawaran deposito berjangka berdasarkan data historis kampanye pemasaran dan profil nasabah, sehingga bank dapat menargetkan kampanye dengan lebih efektif?**
+## *6. Analytical Approach*
+This project will follow these steps:
 
----
+* **Data Understanding & Cleaning:** Examine outliers, handle missing values, encode categorical variables, etc.
+* **Exploratory Data Analysis (EDA):** Analyze data distributions and relationships between features and the target variable.
+* **Feature Engineering:** Create derived features (e.g., age groups, campaign timing segmentation).
+* **Modeling:**
 
-## 4. Goals
+  * **Baseline Model:** Logistic Regression
+  * **Advanced Models:** Random Forest, XGBoost, etc.
+* **Model Evaluation:** Assess performance using classification metrics.
 
-Tujuan utama proyek ini adalah:  
 
-Berdasarkan permasalahan di atas, perusahaan ingin mengembangkan kemampuan untuk memprediksi kemungkinan nasabah menerima tawaran deposito dengan cara:
+## *7. Metric Evaluation*
+![0_wPxmui5uaThY8_ab](https://github.com/user-attachments/assets/7bb4e387-aae5-4a6f-8e60-95896a33cdb0)
+* **True Negative**: The model predicts the customer will not accept the deposit offer (`no`), and in reality, they don't (`no`).
+* **False Negative**: The model predicts the customer will not accept the deposit offer (`no`), but in reality, they do (`yes`).
+* **False Positive**: The model predicts the customer will accept the deposit offer (`yes`), but in reality, they don't (`no`).
+* **True Positive**: The model predicts the customer will accept the deposit offer (`yes`), and in reality, they do (`yes`).
 
-- Membangun pipeline machine learning end-to-end untuk memprediksi apakah nasabah akan menerima tawaran deposito.
-- Mengidentifikasi faktor-faktor kunci yang memengaruhi keputusan nasabah melalui analisis feature importance.
-- Menyediakan sistem rekomendasi prediksi yang siap pakai (deployment-ready) untuk mendukung keputusan tim pemasaran.
+### **Type I Error – False Positive**
 
----
+**Case**: The model predicts the customer will accept the deposit offer (`yes`), but in reality, they won’t (`no`).
+**Business Consequences**:
 
-## 5. Stakeholders
+* Wasted time and cost on telemarketing
+* Marketing resources allocated to uninterested clients
+* Reduced campaign efficiency
 
-Para pemangku kepentingan dalam proyek ini meliputi:
+### **Type II Error – False Negative**
 
-- **Manajemen Bank** → Membuat keputusan bisnis berdasarkan hasil prediksi.
-- **Tim Pemasaran/Telemarketing** → Mengoptimalkan strategi dan segmentasi nasabah.
-- **Nasabah Akhir** → Secara tidak langsung mendapatkan manfaat dari kampanye yang lebih relevan dan tidak mengganggu.
+**Case**: The model predicts the customer will not accept the deposit offer (`no`), but in reality, they would (`yes`).
+**Business Consequences**:
 
----
+* Missed golden opportunities to convert potential clients
+* Lower overall campaign success rate
+* Overlooking high-potential customers
 
-## 6. Analytical Approach
+Given these consequences, our goal is to build a model that minimizes business inefficiencies. Therefore, we aim to maximize the number of correct positive predictions (true positives), while minimizing false positives as much as possible.
 
-Proyek ini menggunakan pendekatan _modern machine learning pipeline_ yang mencakup:
 
-- **Data Preparation:**  
-  Pembersihan data, imputasi missing value, encoding variabel kategorikal, scaling, dan feature engineering untuk menghasilkan fitur yang lebih informatif.
-- **Analisis Data Eksploratif (EDA):**  
-  Menganalisis distribusi data dan hubungan antar fitur dengan target menggunakan visualisasi dan statistik ringkasan.
-- **Penanganan Imbalanced Data:**  
-  Menggunakan teknik resampling seperti SMOTE, RandomOverSampler, dan SMOTEENN untuk meningkatkan representasi kelas minoritas.
-- **Modeling:**
-  - **Baseline:** Logistic Regression
-  - **Advanced:** Decision Tree, Random Forest, ExtraTrees, XGBoost, LightGBM, dan ensemble methods (Voting, Stacking)
-  - **Ensemble & Threshold Tuning:**  
-    Model ensemble (Voting Classifier) dipilih berdasarkan hasil recall tertinggi dan threshold tuning dilakukan untuk mengoptimalkan F2-score sesuai kebutuhan bisnis.
-- **Model Evaluation:**  
-  Evaluasi performa model menggunakan berbagai metrik dan visualisasi confusion matrix pada threshold optimal.
-- **Interpretasi Model:**  
-  Analisis feature importance untuk mendapatkan insight fitur-fitur utama yang memengaruhi prediksi.
-- **Deployment:**  
-  Model pipeline dilatih ulang pada seluruh data dan di-deploy ke aplikasi Streamlit untuk memudahkan user bisnis melakukan prediksi secara real-time.
+## *8. Data Understanding*
+**Bank Client Data:**
+| **No** | **Attribute**                   | **Data Type** | **Description**                                    |
+| -------| --------------------------- | --------- | ---------------------------------------------- |
+|1. | `age`                         | Int       | Umur pelanggan                                 |
+|2. | `job`                         | Object    | type of job (categorical: "admin.","blue-collar","entrepreneur","housemaid","management","retired","self-employed","services","student","technician","unemployed","unknown")                     |
+|3. | `marital`                     | Object    | marital status (categorical: "divorced","married","single","unknown"; note: "divorced" means divorced or widowed)                          |
+|4. | `education`                   | Object    | categorical: "basic.4y","basic.6y","basic.9y","high.school","illiterate","professional.course","university.degree","unknown"                    |
+|5. | `default`                     | Object    | has credit in default (categorical: "no","yes","unknown")          |
+|6. | `housing`                     | Object    | has housing loan? (categorical: "no","yes","unknown")        |
+|7. | `loan`                        | Object    | has personal loan? (categorical: "no","yes","unknown")                        |
 
----
+**related with the last contact of the current campaign:**
+| **No** | **Attribute**                   | **Data Type** | **Description**                                    |
+| -------| --------------------------- | --------- | ---------------------------------------------- |
+|8. | `contact`                     | Object    | contact communication type (categorical: "cellular","telephone")                        |
+|9. | `month`                       | Object    | last contact month of year (categorical: "jan", "feb", "mar", …, "nov", "dec")   |
+|10. | `day_of_week`                 | Object    | last contact day of the week (categorical: "mon","tue","wed","thu","fri")                |
+|11. | `duration`                    | Int       | last contact duration, in seconds (numeric). Important note: this attribute highly affects the output target (e.g., if duration=0 then y="no"). Yet, the duration is not known before a call is performed. Also, after the end of the call y is obviously known. Thus, this input should only be included for benchmark purposes and should be discarded if the intention is to have a realistic predictive model.             |
 
-## 7. Metric Evaluasion
+**other attributes:**
+| **No** | **Attribute**                   | **Data Type** | **Description**                                    |
+| -------| --------------------------- | --------- | ---------------------------------------------- |
+|12. | `campaign`                    | Int       | number of contacts performed during this campaign and for this client (numeric, includes last contact)                        |
+|13. | `pdays`                       | Int       | number of days that passed by after the client was last contacted from a previous campaign (numeric; 999 means client was not previously contacted)                    |
+|14. | `previous`                    | Int       | number of contacts performed before this campaign and for this client (numeric)                 |
+|15. | `poutcome`                    | Object    | outcome of the previous marketing campaign (categorical: "failure","nonexistent","success")       |
 
-> _Evaluasi dilakukan secara komprehensif dengan mempertimbangkan konsekuensi bisnis (FP vs FN) dan imbalance dataset._
+**other attributes:**
+| **No** | **Attribute**                   | **Data Type** | **Description**                                    |
+| -------| --------------------------- | --------- | ---------------------------------------------- |
+|16. | `emp.var.rate`                | Float     | employment variation rate - quarterly indicator (numeric) |
+|17. | `cons.price.idx`              | Float     | consumer price index - monthly indicator (numeric)                    |
+|18. | `cons.conf.idx`               | Float     | consumer confidence index - monthly indicator (numeric)                           |
+|19. | `euribor3m`                   | Float     | euribor 3 month rate - daily indicator (numeric)                    |
+|20. | `nr.employed`                 | Float     | number of employees - quarterly indicator (numeric)         |
+|21. | `y`                           | Object    | has the client subscribed a term deposit? (binary: "yes","no")         |
 
-![Confusion Matrix](confusion_matrix.png)
+## *9. Summary of EDA*
+Based on the previous analysis, we can summarize several key points as follows:
 
-- **True Negative (TN):** Model memprediksi nasabah *tidak* akan menerima tawaran deposito (`no`), dan kenyataannya memang *tidak* (`no`).
-- **False Negative (FN):** Model memprediksi nasabah *tidak* akan menerima tawaran (`no`), padahal sebenarnya *iya* (`yes`).
-- **False Positive (FP):** Model memprediksi nasabah *akan* menerima tawaran (`yes`), padahal sebenarnya *tidak* (`no`).
-- **True Positive (TP):** Model memprediksi nasabah *akan* menerima tawaran (`yes`), dan kenyataannya memang *iya* (`yes`).
+1. Prospective customers aged **30–45 years** are the bank's main target, as this age group is considered financially mature.
+2. Analysis results show that the age groups **56–74 years** and **15–24 years** have the highest conversion rates, at **0.43** and **0.24**, which are higher than the productive age group.
+3. Although **admin** and **blue-collar** workers are offered term deposits the most, occupations such as **students** and **retirees** have higher conversion rates, at **0.31** and **0.25**, respectively.
+4. Although **married** customers are contacted most frequently, **single** customers have a higher conversion rate of **0.14**.
+5. Those with **university degrees** are offered term deposits the most and have a high conversion rate of **0.14**.
+6. Customers with a history of **default** have a **0% conversion rate**, and only **3 customers (0.0072%)** fall into this category.
+7. There is no significant difference in conversion rates between customers who **have housing loans** and those who do not.
+8. In the loan column, although customers **without loans** are contacted more often, the conversion rate is nearly the same as those **with loans**.
+9. The bank’s strategy of contacting customers via **mobile phone (cellular)** proves effective, with a **0.15** conversion rate compared to **landlines** at **0.05**.
+10. **March, September, October, and December** have high conversion rates despite low contact volume. On the other hand, **May** has high contact volume but a low conversion rate.
+11. **Thursday** is the best day for the last contact, with a **0.12** conversion rate.
+12. **Very long call durations** yield the highest conversion rates, followed by **medium-long**, **medium-short**, and **very short calls**.
+13. Most customers have never been contacted before (category **999**).
+14. The median duration of the last contact does not show a significant difference between customers who subscribed and those who didn’t.
+15. Most customers were not contacted in the previous campaign (category **0**).
 
----
+These insights can help improve the bank’s conversion rate and profitability, and are expected to further enhance the bank’s overall performance.
 
-### Type I Error – False Positive
+## *10. EDA Recommendation*
+After analyzing the data, we have identified several recommended actions to improve the conversion rate, which in turn will increase the company's profitability:
 
-**Kasus:** Model memprediksi nasabah akan menerima tawaran deposito (`yes`), padahal sebenarnya tidak (`no`).  
-**Konsekuensi Bisnis:**
-- Waktu dan biaya telemarketing terbuang sia-sia
-- Sumber daya pemasaran digunakan untuk nasabah yang tidak tertarik
-- Efisiensi kampanye menurun
+1. **More Precise Demographic Targeting:** Focus marketing efforts on two specific age groups, individuals aged 17 to 25 and those aged 65 to 74. Additionally, prioritize customers who are students or retirees.
+2. **Target Single Customers:** Market more actively to customers with a single marital status, as this group has a high conversion rate but relatively low marketing exposure.
+3. **Provide Educational Materials:** Offer more information and educational materials on the importance of term deposits to customers with low education levels, such as those categorized as "Illiterate" or with only basic education, to potentially boost conversion rates.
+4. **Avoid Contacting Customers with Poor Payment History:** Be more selective in contacting customers with a history of credit default, as they may be less interested in subscribing to term deposits.
+5. **Prefer Mobile Phone Communication:** Use mobile phones for contacting customers more often than landlines.
+6. **Monitor Euribor Interest Rate:** Increase contact with customers when the Euribor interest rate is declining, to assess any relationship between interest rate trends and conversion rates.
+7. **Prioritize Contact on Thursdays:** Give priority to contacting customers on Thursdays, as this day shows a higher conversion rate, indicating better chances for positive responses.
+8. **Creative and Interactive Approach:** Strive to make conversations more engaging and interactive rather than too brief. Although this may take more time, longer calls tend to attract more customers to subscribe to term deposits.
+9. **Limit Campaign Contacts:** Restrict the number of campaigns per customer to a maximum of 20 times, as excessive campaigns can become ineffective.
+10. **Focus on Previous Term Deposit Subscribers:** Pay special attention to customers who have subscribed to term deposits in previous campaigns, as they are more likely to subscribe again.
+11. **Monitor Economic Indicators:** Contact customers when the "Employment Variation Rate" shows a negative trend (increasing layoffs), "CPI" (inflation rate) is low, and "CCI" (Consumer Confidence Index) is high.
+12. **Prioritize Communication During Low Euribor Rates:** Focus on contacting customers when the 3-month Euribor interest rate is low, as this may have a stronger influence on their decision.
+13. **Consider Number of Employees:** Contact customers when the "Number of Employees" indicator shows a low number of employees, as this situation might affect their decision related to term deposits.
 
----
-
-### Type II Error – False Negative
-
-**Kasus:** Model memprediksi nasabah tidak akan menerima tawaran (`no`), padahal sebenarnya ya (`yes`).  
-**Konsekuensi Bisnis:**
-- Kehilangan peluang emas untuk mengonversi nasabah potensial
-- Tingkat keberhasilan kampanye menurun
-- Potensi nasabah bernilai tinggi terlewatkan
-
----
-
-Dengan mempertimbangkan konsekuensi di atas, fokus utama model adalah **meminimalkan False Negative** (Type II Error), sehingga semakin banyak nasabah potensial yang benar-benar tertangkap oleh kampanye. Oleh sebab itu, **Recall** menjadi metrik evaluasi utama, didukung oleh F2 Score dan PR AUC untuk memastikan model tetap robust di dataset imbalanced.
-
----
-
-- **Recall (Sensitivitas)**  
-  Proporsi kejadian positif yang berhasil diprediksi dengan benar.  
-  \[
-  \text{Recall} = \frac{TP}{TP + FN}
-  \]
-
-- **Precision**  
-  Proporsi prediksi positif yang benar-benar tepat.  
-  \[
-  \text{Precision} = \frac{TP}{TP + FP}
-  \]
-
-- **F1 & F2 Score**  
-  F1 adalah rata-rata harmonis antara precision dan recall.  
-  F2 lebih berat pada recall, sehingga sangat cocok untuk konteks ini.  
-  \[
-  F_\beta = (1+\beta^2) \cdot \frac{\text{Precision} \cdot \text{Recall}}{(\beta^2 \cdot \text{Precision}) + \text{Recall}}
-  \]
-  Dengan \(\beta = 2\), fokus utama ke recall.
-
-- **PR AUC (Precision-Recall Area Under Curve)**  
-  Luas area di bawah kurva Precision vs Recall pada berbagai threshold.  
-  Sangat cocok untuk dataset yang tidak seimbang (imbalanced).
-
----
-
-### Mengapa Recall dan F2 Score?
-
-- Pada konteks pemasaran deposito berjangka, **missed opportunity** (False Negative) lebih merugikan, karena berarti kehilangan nasabah yang sebenarnya potensial.
-- Model dengan recall tinggi akan **menangkap lebih banyak nasabah yang benar-benar tertarik** membuka deposito, meskipun harus mengorbankan sedikit efisiensi (precision).
-- F2 Score dipilih untuk mengakomodasi kebutuhan bisnis yang lebih berat ke recall.
-- PR AUC digunakan untuk memantau robustness model pada dataset yang imbalance.
-
----
-
-### Business Implication
-
-- **Recall Tinggi** → Semakin banyak nasabah potensial yang bisa dijangkau oleh tim pemasaran.
-- **F2 Score** → Memastikan optimasi recall tetap sejalan dengan precision yang cukup.
-- **Precision & PR AUC** → Memantau efisiensi campaign dan performa model pada imbalance dataset.
-- **Feature Importance** → Insight untuk pengambilan keputusan strategi campaign selanjutnya.
-
----
-
-**Dengan pendekatan pipeline modern, threshold tuning, dan deployment-ready pipeline, proyek ini memberikan solusi end-to-end yang bisa langsung digunakan oleh bisnis.**
+By implementing these recommendations and adapting them into a more detailed marketing strategy, we are optimistic that they will help increase the conversion rate and support the company’s business growth.
